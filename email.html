@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEPEO - Produtos em Destaque</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #08ACE3 0%, #0690c4 100%);
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .logo {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .greeting {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .intro-text {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .products-section {
+            margin: 30px 0;
+        }
+
+        .section-title {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .product-image {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 8px;
+            margin: 0 auto 20px;
+            display: block;
+        }
+
+        .product-title {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .product-description {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #08ACE3 0%, #0690c4 100%);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(8, 172, 227, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(8, 172, 227, 0.6);
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .footer {
+            background-color: #333;
+            color: #ffffff;
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .footer-text {
+            margin: 5px 0;
+            color: #ccc;
+        }
+
+        .social-links {
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: #08ACE3;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 600;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #08ACE3, transparent);
+            margin: 30px 0;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .content {
+                padding: 30px 20px;
+            }
+
+            .greeting {
+                font-size: 20px;
+            }
+
+            .product-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-container">
+        <!-- Header com Logo -->
+        <div class="header">
+            <img src="cid:logo_cepeo" alt="CEPEO Logo" class="logo">
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="content">
+            <div class="greeting">Olá, {nome}!</div>
+
+            <p class="intro-text">
+                Estamos muito felizes em apresentar nossos produtos em destaque!
+                A CEPEO é referência em soluções de qualidade e estamos prontos para atender você com excelência.
+            </p>
+
+            <div class="divider"></div>
+
+            <!-- Seção de Produtos -->
+            <div class="products-section">
+                <h2 class="section-title">Produtos em Destaque</h2>
+
+                <!-- Produto 1 -->
+                <div class="product-card">
+                    <img src="cid:produto_1" alt="Produto 1" class="product-image">
+                    <h3 class="product-title">Produto Premium 1</h3>
+                    <p class="product-description">
+                        Descubra a excelência com nosso Produto Premium 1.
+                        Desenvolvido com a mais alta tecnologia e qualidade superior,
+                        este produto é a escolha ideal para quem busca resultados excepcionais.
+                    </p>
+                    <div class="button-container">
+                        <a href="https://www.cepeo.com.br/produto-1" class="cta-button">
+                            Saiba Mais →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Produto 2 -->
+                <div class="product-card">
+                    <img src="cid:produto_2" alt="Produto 2" class="product-image">
+                    <h3 class="product-title">Produto Premium 2</h3>
+                    <p class="product-description">
+                        O Produto Premium 2 representa inovação e eficiência.
+                        Com características únicas e design pensado especialmente para atender
+                        suas necessidades, esta é uma oportunidade imperdível.
+                    </p>
+                    <div class="button-container">
+                        <a href="https://www.cepeo.com.br/produto-2" class="cta-button">
+                            Saiba Mais →
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- CTA Principal -->
+            <div style="text-align: center; margin: 40px 0;">
+                <h2 style="color: #333; margin-bottom: 20px;">Pronto para conhecer mais?</h2>
+                <p style="color: #666; margin-bottom: 25px; font-size: 16px;">
+                    Entre em contato conosco e descubra como podemos ajudá-lo!
+                </p>
+                <a href="https://www.cepeo.com.br/contato" class="cta-button"
+                    style="font-size: 18px; padding: 18px 50px;">
+                    Fale Conosco Agora!
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p class="footer-text"><strong>CEPEO</strong></p>
+            <p class="footer-text">Excelência em Soluções</p>
+            <p class="footer-text">� R. Coronel Alm Rehem, 82 - Caminho Árvores, 1° andar</p>
+            <p class="footer-text">Salvador, BA - 41820-768</p>
+            <p class="footer-text">📧 cepeodireto@cepeo.com.br</p>
+            <p class="footer-text">� 0800 071 23 31 | (71) 3341-9312 | (71) 99729-6088</p>
+
+            <div class="social-links">
+                <a href="https://www.cepeo.com.br">Website</a> |
+                <a href="https://facebook.com/cepeo">Facebook</a> |
+                <a href="https://instagram.com/cepeo">Instagram</a>
+            </div>
+
+            <p class="footer-text" style="margin-top: 20px; font-size: 12px;">
+                Você está recebendo este email porque faz parte da nossa lista de contatos.
+                <br>Se não deseja mais receber nossas comunicações,
+                <a href="#" style="color: #08ACE3;">clique aqui para descadastrar</a>.
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
