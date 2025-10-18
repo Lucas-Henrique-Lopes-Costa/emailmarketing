@@ -48,8 +48,8 @@ class EmailMarketingCEPEO:
         self.csv_file = self.base_path / "contato.csv"
         self.html_template = self.base_path / "email.html"
         self.logo_path = self.base_path / "arquivos" / "logo_cepeo.jpeg"
-        self.produto1_path = self.base_path / "arquivos" / "produto-1.jpeg"
-        self.produto2_path = self.base_path / "arquivos" / "produto-2.jpeg"
+        self.produto1_path = self.base_path / "arquivos" / "imagem1.png"
+        self.produto2_path = self.base_path / "arquivos" / "imagem2.jpeg"
 
         # Verificar se os arquivos existem
         self._verificar_arquivos()
@@ -75,22 +75,37 @@ class EmailMarketingCEPEO:
             sys.exit(1)
 
     def ler_contatos(self):
-        """Lê os contatos do arquivo CSV"""
+        """Lê os contatos do arquivo CSV (robusto contra colunas extras)"""
         contatos = []
         try:
             with open(self.csv_file, "r", encoding="utf-8") as file:
-                # O CSV usa ponto e vírgula como separador
-                reader = csv.DictReader(file, delimiter=";")
+                reader = csv.reader(file, delimiter=";")
+                header = next(reader, None)
+
+                # Tenta identificar índice das colunas Nome e Email
+                nome_idx = None
+                email_idx = None
+                for i, h in enumerate(header):
+                    col = h.strip().lower()
+                    if "nome" in col:
+                        nome_idx = i
+                    elif "email" in col:
+                        email_idx = i
+
+                if nome_idx is None or email_idx is None:
+                    raise ValueError(
+                        "Cabeçalhos 'Nome' e 'Email' não encontrados no CSV"
+                    )
+
                 for row in reader:
-                    nome = row.get("Nome", "").strip()
-                    email = row.get("Email", "").strip()
+                    if len(row) <= max(nome_idx, email_idx):
+                        continue  # pula linhas incompletas
 
-                    # Formatar nome para Title Case (primeira letra maiúscula)
-                    nome_formatado = nome.title() if nome else ""
+                    nome = row[nome_idx].strip()
+                    email = row[email_idx].strip()
 
-                    # Validação básica
-                    if nome_formatado and email and "@" in email:
-                        contatos.append({"nome": nome_formatado, "email": email})
+                    if nome and email and "@" in email:
+                        contatos.append({"nome": nome.title(), "email": email})
 
             print(f"✅ {len(contatos)} contatos válidos carregados do CSV")
             return contatos
@@ -156,16 +171,25 @@ class EmailMarketingCEPEO:
             # Criar a mensagem
             msg = self.criar_mensagem_email(destinatario_email, destinatario_nome)
 
-            # Conectar ao servidor SMTP
-            with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
-                server.starttls()  # Ativar TLS
-                server.login(self.email_user, self.email_password)
-                server.send_message(msg)
+            # Verificar se é porta SSL (465) ou TLS (587)
+            if self.smtp_port == 465:
+                # Usar SMTP_SSL para porta 465
+                with smtplib.SMTP_SSL(self.smtp_server, self.smtp_port) as server:
+                    server.set_debuglevel(0)  # Desativa debug do SMTP
+                    server.login(self.email_user, self.email_password)
+                    server.send_message(msg)
+            else:
+                # Usar SMTP com STARTTLS para porta 587
+                with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
+                    server.set_debuglevel(0)  # Desativa debug do SMTP
+                    server.starttls()
+                    server.login(self.email_user, self.email_password)
+                    server.send_message(msg)
 
             return True
 
         except Exception as e:
-            print(f"❌ Erro ao enviar email para {destinatario_email}: {e}")
+            print(f"\n❌ Erro ao enviar email para {destinatario_email}: {e}")
             return False
 
     def enviar_campanha(self, limite=None, delay=1):
@@ -195,7 +219,7 @@ class EmailMarketingCEPEO:
                 f"⚠️  Modo de teste: enviando apenas para os primeiros {limite} contatos"
             )
 
-        # Confirmação do usuário
+        # Resumo da campanha
         print(f"\n📊 Resumo da campanha:")
         print(f"   - Total de destinatários: {len(contatos)}")
         print(f"   - Servidor SMTP: {self.smtp_server}")
@@ -203,42 +227,46 @@ class EmailMarketingCEPEO:
         print(f"   - Assunto: {self.email_subject}")
         print()
 
-        resposta = input("Deseja continuar com o envio? (s/n): ").strip().lower()
-        if resposta != "s":
-            print("❌ Envio cancelado pelo usuário.")
-            return
-
-        print("\n🚀 Iniciando envio de emails...\n")
+        print("🚀 Iniciando envio de emails...\n")
 
         # Estatísticas
         enviados = 0
         falhas = 0
+
+        inicio_campanha = time.time()
 
         # Enviar emails
         for i, contato in enumerate(contatos, 1):
             nome = contato["nome"]
             email = contato["email"]
 
-            print(f"[{i}/{len(contatos)}] Enviando para: {nome} ({email})...", end=" ")
+            print(f"[{i}/{len(contatos)}] Enviando para: {nome} ({email})...")
 
+            inicio = time.time()
             if self.enviar_email(email, nome):
-                print("✅ Sucesso!")
+                tempo_decorrido = time.time() - inicio
+                print(f"    ✅ Sucesso! (tempo: {tempo_decorrido:.2f}s)")
                 enviados += 1
             else:
-                print("❌ Falha!")
+                print(f"    ❌ Falha!")
                 falhas += 1
 
             # Aguardar entre envios (evitar bloqueio por spam)
             if i < len(contatos):
+                print(f"    ⏳ Aguardando {delay}s antes do próximo envio...")
                 time.sleep(delay)
 
         # Relatório final
+        tempo_total = time.time() - inicio_campanha
         print("\n" + "=" * 60)
         print("📊 RELATÓRIO FINAL")
         print("=" * 60)
         print(f"✅ Emails enviados com sucesso: {enviados}")
         print(f"❌ Falhas no envio: {falhas}")
         print(f"📈 Taxa de sucesso: {(enviados/len(contatos)*100):.1f}%")
+        print(f"⏱️  Tempo total: {tempo_total:.2f}s ({tempo_total/60:.1f} minutos)")
+        if enviados > 0:
+            print(f"⚡ Tempo médio por email: {tempo_total/len(contatos):.2f}s")
         print("=" * 60)
 
 
