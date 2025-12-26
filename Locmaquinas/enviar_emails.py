@@ -47,7 +47,7 @@ class EmailMarketingCEPEO:
         self.base_path = Path(__file__).parent
         self.csv_file = self.base_path / "contato.csv"
         self.html_template = self.base_path / "email_natal.html"
-        self.logo_path = self.base_path / "arquivos" / "logo.webp"
+        self.logo_path = self.base_path / "arquivos" / "logo.png"
         self.natal_path = self.base_path / "arquivos" / "natal.png"
 
         # Verificar se os arquivos existem
@@ -146,7 +146,22 @@ class EmailMarketingCEPEO:
         for cid, caminho_imagem in imagens.items():
             try:
                 with open(caminho_imagem, "rb") as img_file:
-                    img = MIMEImage(img_file.read())
+                    img_data = img_file.read()
+
+                    # Determinar o tipo MIME correto baseado na extensão
+                    if caminho_imagem.suffix.lower() == ".webp":
+                        # Para WebP, usar tipo genérico
+                        img = MIMEImage(img_data, _subtype="webp")
+                    elif caminho_imagem.suffix.lower() in [
+                        ".png",
+                        ".jpg",
+                        ".jpeg",
+                        ".gif",
+                    ]:
+                        img = MIMEImage(img_data)
+                    else:
+                        img = MIMEImage(img_data)
+
                     img.add_header("Content-ID", f"<{cid}>")
                     img.add_header(
                         "Content-Disposition", "inline", filename=caminho_imagem.name
