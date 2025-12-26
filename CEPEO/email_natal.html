@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEPEO - Feliz Natal! 🎄</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .email-container {
+            margin: 0 auto;
+            background-color: #ffffff;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #c41e3a 0%, #8b1a2d 100%);
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '🎄';
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 40px;
+        }
+
+        .header::after {
+            content: '🎄';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 40px;
+        }
+
+        .logo {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .content {
+            padding: 40px 30px;
+            background: linear-gradient(180deg, #ffffff 0%, #fff5f5 100%);
+        }
+
+        .christmas-banner {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #165b33 0%, #0f3d21 100%);
+            color: #ffd700;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(193, 30, 58, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .christmas-banner span {
+            display: block;
+            font-size: 16px;
+            color: #ffffff;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .greeting {
+            font-size: 26px;
+            color: #c41e3a;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .intro-text {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .natal-image {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 15px;
+            margin: 30px auto;
+            display: block;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .coupon-section {
+            background: linear-gradient(135deg, #c41e3a 0%, #8b1a2d 100%);
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 8px 25px rgba(196, 30, 58, 0.3);
+        }
+
+        .coupon-title {
+            color: #ffd700;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .coupon-code {
+            background-color: #ffffff;
+            color: #c41e3a;
+            font-size: 36px;
+            font-weight: bold;
+            padding: 20px 40px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 20px 0;
+            border: 3px dashed #ffd700;
+            letter-spacing: 5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .coupon-description {
+            color: #ffffff;
+            font-size: 18px;
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+
+        .coupon-validity {
+            color: #ffd700;
+            font-size: 14px;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #165b33 !important;
+            text-decoration: none;
+            padding: 18px 50px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.7);
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .footer {
+            background-color: #165b33;
+            color: #ffffff;
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .footer-text {
+            margin: 5px 0;
+            color: #e6e6e6;
+        }
+
+        .social-links {
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: #ffd700;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 600;
+        }
+
+        .divider {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #c41e3a, #ffd700, #c41e3a, transparent);
+            margin: 30px 0;
+        }
+
+        .snowflakes {
+            text-align: center;
+            font-size: 30px;
+            margin: 20px 0;
+            letter-spacing: 10px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .content {
+                padding: 30px 20px;
+            }
+
+            .greeting {
+                font-size: 22px;
+            }
+
+            .coupon-code {
+                font-size: 28px;
+                padding: 15px 30px;
+                letter-spacing: 3px;
+            }
+
+            .christmas-banner {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-container">
+        <!-- Header com Logo -->
+        <div class="header">
+            <img src="cid:logo_cepeo" alt="CEPEO Logo" class="logo">
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="content">
+            <div class="christmas-banner">
+                🎅 Feliz Natal! 🎅
+                <span>Presentes especiais para você</span>
+            </div>
+
+            <div class="greeting">Olá, {nome}! 🎄</div>
+
+            <p class="intro-text">
+                Neste Natal, a CEPEO preparou uma surpresa especial para você!<br>
+                Celebre conosco com ofertas exclusivas e muito mais.<br>
+                Que esta época seja repleta de alegria, paz e realizações! ✨
+            </p>
+
+            <div class="snowflakes">❄️ ❄️ ❄️ ❄️ ❄️</div>
+
+            <!-- Imagem de Natal -->
+            <img src="cid:natal" alt="Feliz Natal" class="natal-image">
+
+            <div class="divider"></div>
+
+            <!-- Seção do Cupom -->
+            <div class="coupon-section">
+                <div class="coupon-title">🎁 Presente Especial de Natal 🎁</div>
+                <div class="coupon-code">NATAL</div>
+                <div class="coupon-description">
+                    Use este cupom e ganhe <strong>desconto especial</strong> em suas compras!<br>
+                    Nosso presente de Natal para você! 🎄
+                </div>
+                <div class="coupon-validity">
+                    ⏰ Válido durante todo o período natalino
+                </div>
+            </div>
+
+            <div class="button-container">
+                <a href="https://www.cepeo.com.br" class="cta-button">🎁 Aproveitar Agora</a>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="snowflakes">🎄 ⭐ 🎁 ⭐ 🎄</div>
+
+            <p class="intro-text" style="margin-top: 30px;">
+                A CEPEO deseja a você e sua família um Feliz Natal<br>
+                e um Ano Novo cheio de prosperidade e realizações!
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p class="footer-text"><strong>🎄 CEPEO - Feliz Natal! 🎄</strong></p>
+            <p class="footer-text">Excelência em Soluções</p>
+            <p class="footer-text">R. Coronel Alm Rehem, 82 - Caminho Árvores, 1° andar</p>
+            <p class="footer-text">Salvador, BA - 41820-768</p>
+            <p class="footer-text" style="color: #ffffff;">cepeodireto@cepeo.com.br</p>
+            <p class="footer-text">0800 071 23 31 | (71) 3341-9312 | (71) 99729-6088</p>
+
+            <div class="social-links">
+                <a href="https://www.cepeo.com.br">Website</a>
+            </div>
+
+            <p class="footer-text" style="margin-top: 20px; font-size: 12px;">
+                Você está recebendo este email porque faz parte da nossa lista de contatos.
+                <br>Se não deseja mais receber nossas comunicações,
+                <a href="https://www.cepeo.com.br" style="color: #ffd700;">clique aqui para descadastrar</a>.
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

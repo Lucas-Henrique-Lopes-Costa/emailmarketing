@@ -46,10 +46,9 @@ class EmailMarketingCEPEO:
         # Caminhos dos arquivos
         self.base_path = Path(__file__).parent
         self.csv_file = self.base_path / "contato.csv"
-        self.html_template = self.base_path / "email.html"
-        self.logo_path = self.base_path / "arquivos" / "logo_cepeo.jpeg"
-        self.produto1_path = self.base_path / "arquivos" / "imagem1.png"
-        self.produto2_path = self.base_path / "arquivos" / "imagem2.jpeg"
+        self.html_template = self.base_path / "email_natal.html"
+        self.logo_path = self.base_path / "arquivos" / "logo.webp"
+        self.natal_path = self.base_path / "arquivos" / "natal.png"
 
         # Verificar se os arquivos existem
         self._verificar_arquivos()
@@ -59,9 +58,8 @@ class EmailMarketingCEPEO:
         arquivos_necessarios = {
             "CSV de contatos": self.csv_file,
             "Template HTML": self.html_template,
-            "Logo CEPEO": self.logo_path,
-            "Produto 1": self.produto1_path,
-            "Produto 2": self.produto2_path,
+            "Logo LocExpress": self.logo_path,
+            "Imagem Natal": self.natal_path,
         }
 
         arquivos_faltando = []
@@ -75,37 +73,32 @@ class EmailMarketingCEPEO:
             sys.exit(1)
 
     def ler_contatos(self):
-        """Lê os contatos do arquivo CSV (robusto contra colunas extras)"""
+        """Lê os contatos do arquivo CSV (apenas emails)"""
         contatos = []
         try:
             with open(self.csv_file, "r", encoding="utf-8") as file:
                 reader = csv.reader(file, delimiter=";")
                 header = next(reader, None)
 
-                # Tenta identificar índice das colunas Nome e Email
-                nome_idx = None
+                # Tenta identificar índice da coluna Email
                 email_idx = None
                 for i, h in enumerate(header):
                     col = h.strip().lower()
-                    if "nome" in col:
-                        nome_idx = i
-                    elif "email" in col:
+                    if "email" in col:
                         email_idx = i
+                        break
 
-                if nome_idx is None or email_idx is None:
-                    raise ValueError(
-                        "Cabeçalhos 'Nome' e 'Email' não encontrados no CSV"
-                    )
+                if email_idx is None:
+                    raise ValueError("Cabeçalho 'Email' não encontrado no CSV")
 
                 for row in reader:
-                    if len(row) <= max(nome_idx, email_idx):
+                    if len(row) <= email_idx:
                         continue  # pula linhas incompletas
 
-                    nome = row[nome_idx].strip()
                     email = row[email_idx].strip()
 
-                    if nome and email and "@" in email:
-                        contatos.append({"nome": nome.title(), "email": email})
+                    if email and "@" in email:
+                        contatos.append({"email": email})
 
             print(f"✅ {len(contatos)} contatos válidos carregados do CSV")
             return contatos
@@ -114,21 +107,21 @@ class EmailMarketingCEPEO:
             print(f"❌ Erro ao ler o arquivo CSV: {e}")
             sys.exit(1)
 
-    def carregar_template_html(self, nome_destinatario):
-        """Carrega o template HTML e personaliza com o nome do destinatário"""
+    def carregar_template_html(self):
+        """Carrega o template HTML"""
         try:
             with open(self.html_template, "r", encoding="utf-8") as file:
                 html_content = file.read()
 
-            # Substituir o placeholder {nome} pelo nome real
-            html_personalizado = html_content.replace("{nome}", nome_destinatario)
+            # Substituir o placeholder {nome} por nome genérico
+            html_personalizado = html_content.replace("{nome}", "Cliente")
             return html_personalizado
 
         except Exception as e:
             print(f"❌ Erro ao carregar template HTML: {e}")
             sys.exit(1)
 
-    def criar_mensagem_email(self, destinatario_email, destinatario_nome):
+    def criar_mensagem_email(self, destinatario_email):
         """Cria a mensagem de email com HTML e imagens incorporadas"""
         msg = MIMEMultipart("related")
         msg["Subject"] = self.email_subject
@@ -139,16 +132,15 @@ class EmailMarketingCEPEO:
         msg_alternative = MIMEMultipart("alternative")
         msg.attach(msg_alternative)
 
-        # Carregar e anexar o HTML personalizado
-        html_content = self.carregar_template_html(destinatario_nome)
+        # Carregar e anexar o HTML
+        html_content = self.carregar_template_html()
         msg_html = MIMEText(html_content, "html", "utf-8")
         msg_alternative.attach(msg_html)
 
         # Anexar as imagens como inline (CID)
         imagens = {
-            "logo_cepeo": self.logo_path,
-            "produto_1": self.produto1_path,
-            "produto_2": self.produto2_path,
+            "logo": self.logo_path,
+            "natal": self.natal_path,
         }
 
         for cid, caminho_imagem in imagens.items():
@@ -165,11 +157,11 @@ class EmailMarketingCEPEO:
 
         return msg
 
-    def enviar_email(self, destinatario_email, destinatario_nome):
+    def enviar_email(self, destinatario_email):
         """Envia um email para um destinatário específico"""
         try:
             # Criar a mensagem
-            msg = self.criar_mensagem_email(destinatario_email, destinatario_nome)
+            msg = self.criar_mensagem_email(destinatario_email)
 
             # Verificar se é porta SSL (465) ou TLS (587)
             if self.smtp_port == 465:
@@ -237,13 +229,12 @@ class EmailMarketingCEPEO:
 
         # Enviar emails
         for i, contato in enumerate(contatos, 1):
-            nome = contato["nome"]
             email = contato["email"]
 
-            print(f"[{i}/{len(contatos)}] Enviando para: {nome} ({email})...")
+            print(f"[{i}/{len(contatos)}] Enviando para: {email}...")
 
             inicio = time.time()
-            if self.enviar_email(email, nome):
+            if self.enviar_email(email):
                 tempo_decorrido = time.time() - inicio
                 print(f"    ✅ Sucesso! (tempo: {tempo_decorrido:.2f}s)")
                 enviados += 1
