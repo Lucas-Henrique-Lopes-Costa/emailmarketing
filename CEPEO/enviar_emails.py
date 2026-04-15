@@ -46,11 +46,10 @@ class EmailMarketingCEPEO:
         # Caminhos dos arquivos
         self.base_path = Path(__file__).parent
         self.csv_file = self.base_path / "contato.csv"
-        self.html_template = self.base_path / "email_natal.html"
+        self.html_template = self.base_path / "campanhas" / "abril" / "email.html"
         self.logo_path = self.base_path / "arquivos" / "logo_cepeo.jpeg"
-        self.produto1_path = self.base_path / "arquivos" / "imagem1.png"
-        self.produto2_path = self.base_path / "arquivos" / "imagem2.jpeg"
-        self.natal_path = self.base_path / "arquivos" / "natal.png"
+        self.produto1_path = self.base_path / "campanhas" / "abril" / "fotos" / "WhatsApp Image 2026-03-30 at 14.52.53.jpeg"
+        self.produto2_path = self.base_path / "campanhas" / "abril" / "fotos" / "WhatsApp Image 2026-03-30 at 14.52.53 (2).jpeg"
 
         # Verificar se os arquivos existem
         self._verificar_arquivos()
@@ -63,7 +62,6 @@ class EmailMarketingCEPEO:
             "Logo CEPEO": self.logo_path,
             "Produto 1": self.produto1_path,
             "Produto 2": self.produto2_path,
-            "Imagem Natal": self.natal_path,
         }
 
         arquivos_faltando = []
@@ -151,7 +149,6 @@ class EmailMarketingCEPEO:
             "logo_cepeo": self.logo_path,
             "produto_1": self.produto1_path,
             "produto_2": self.produto2_path,
-            "natal": self.natal_path,
         }
 
         for cid, caminho_imagem in imagens.items():
